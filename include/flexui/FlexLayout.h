@@ -10,6 +10,7 @@ enum class FlexJustify  { Start, Center, End, SpaceBetween };
 struct FlexChild {
     float fixedW = -1, fixedH = -1;
     float grow = 0;
+    bool visible = true;
     std::function<void(Rectangle)> draw;
     std::function<void(Rectangle)> handleInput;
 };

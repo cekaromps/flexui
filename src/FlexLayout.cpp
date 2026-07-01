@@ -8,7 +8,9 @@ std::vector<FlexBox::LayoutResult> FlexBox::ComputeLayout(Rectangle bounds) {
     bool  isRow         = direction == FlexDirection::Row;
     float mainAxisSize  = isRow ? bounds.width  : bounds.height;
     float crossAxisSize = isRow ? bounds.height : bounds.width;
-    int   n             = (int)children.size();
+    int n = 0;
+    for(auto& c : children)
+        if(c.visible) n++;
 
     float totalFixed = 0, totalGrow = 0;
     for (auto& c : children) {
@@ -63,12 +65,15 @@ std::vector<FlexBox::LayoutResult> FlexBox::ComputeLayout(Rectangle bounds) {
 void FlexBox::Layout(Rectangle bounds) {
     auto results = ComputeLayout(bounds);
     for (int i = 0; i < (int)children.size(); i++)
-        if (children[i].draw) children[i].draw(results[i].rect);
+        if (children[i].visible && children[i].draw)
+            children[i].draw(results[i].rect);
 }
 
 void FlexBox::HandleInput(Rectangle bounds) {
     auto results = ComputeLayout(bounds);
     for (int i = 0; i < (int)children.size(); i++)
-        if (children[i].handleInput) children[i].handleInput(results[i].rect);
+        if (children[i].visible && children[i].handleInput)
+            children[i].handleInput(results[i].rect);
 }
+
 
