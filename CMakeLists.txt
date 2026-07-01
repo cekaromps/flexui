@@ -31,7 +31,7 @@ install(EXPORT flexuiTargets
 )
 
 # optional: build examples
-option(FLEXUI_BUILD_EXAMPLES "Build examples" OFF)
+option(FLEXUI_BUILD_EXAMPLES "Build examples" ON)
 if(FLEXUI_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
