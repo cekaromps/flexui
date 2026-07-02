@@ -7,6 +7,21 @@ void TextInput::HandleInput() {
     if (!focused) return;
     if (IsKeyPressed(KEY_BACKSPACE) && !value.empty())
         value.pop_back();
+
+    bool ctrlDown = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL);
+    if (ctrlDown && IsKeyPressed(KEY_V)) {
+        const char* clip = GetClipboardText();
+        if (clip) {
+            for (const char* p = clip; *p != '\0'; ++p) {
+                // Treat newlines/tabs as terminators rather than inserting
+                // them into a single-line field.
+                if (*p == '\n' || *p == '\r' || *p == '\t') break;
+                if ((int)value.size() >= maxLength) break;
+                value += *p;
+            }
+        }
+    }
+
     int ch = GetCharPressed();
     while (ch > 0) {
         if (ch >= 32 && (int)value.size() < maxLength)
